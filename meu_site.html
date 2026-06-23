@@ -1,0 +1,1299 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio AI & Automação | Pedro Aiello</title>
+    <!-- Carregando Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- DESIGN SYSTEM APPLE --- */
+        :root {
+            --card-bg: #ffffff;
+            --text-secondary: #86868b;
+            --accent-blue: #0071e3;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        /* Ajuste para o header fixo não cobrir o título */
+        html {
+            scroll-padding-top: 5rem; 
+        }
+
+        /* Configurações de tipografia */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMAÇÃO DE ENTRADA (REVEAL ON SCROLL) --- */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efeito de hover suave nos botões */
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilo para links de navegação */
+        .nav-link {
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #1d1d1f;
+            opacity: 0.9;
+        }
+        /* Cor de fundo para seções */
+        .bg-f5f5f7 {
+            background-color: #f5f5f7;
+        }
+
+        /* --- BENTO GRID CARDS --- */
+        .apple-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .apple-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: #f5f5f7;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border: 1px solid rgba(134, 134, 139, 0.2);
+            padding: 4px 10px;
+            border-radius: 99px;
+        }
+
+        /* --- CSS REFINADO: ANIMAÇÃO DE SKILLS --- */
+        .skills-container {
+            background-color: #ffffff;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            padding: 40px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .skills-track {
+            display: inline-block;
+            animation: scroll 45s linear infinite;
+        }
+
+        .skill-pill {
+            display: inline-block;
+            background: #ffffff;
+            color: #4b5563;
+            padding: 10px 28px;
+            border-radius: 99px; 
+            margin: 0 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); 
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .skill-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            color: #1d1d1f;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ===== DIAGRAMA DE ARQUITETURA (FinFlow) ===== */
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        .arch-stage {
+            position: relative;
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            align-items: stretch;
+            gap: 20px;
+        }
+        .arch-step {
+            flex-shrink: 0;
+            width: 44px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #c7c7cc;
+            letter-spacing: 0.05em;
+            padding-top: 30px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .arch-node {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 24px;
+            padding: 28px 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.4s cubic-bezier(0.25,0.8,0.25,1), box-shadow 0.4s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .arch-node:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
+        }
+        .arch-node--accent {
+            border-color: rgba(79,70,229,0.25);
+            background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%);
+        }
+        .arch-node--dark {
+            background: #1d1d1f;
+            border-color: #1d1d1f;
+        }
+        .arch-node-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            background: #f5f5f7;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .arch-node-icon--accent { background: #ede9fe; color: #4f46e5; }
+        .arch-node-icon--dark { background: rgba(255,255,255,0.1); color: #a5b4fc; }
+        .arch-node-icon svg { width: 22px; height: 22px; }
+        .arch-node-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 6px;
+        }
+        .arch-node-title--light { color: #ffffff; }
+        .arch-node-desc {
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: #6e6e73;
+        }
+        .arch-node-desc--light { color: #c7c7cc; }
+        .arch-node-desc code {
+            background: rgba(79,70,229,0.08);
+            color: #4f46e5;
+            padding: 1px 6px;
+            border-radius: 5px;
+            font-size: 0.85em;
+        }
+        /* Conector vertical entre etapas */
+        .arch-connector {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            justify-content: flex-start;
+            padding-left: 22px; /* alinha com o centro do node, após coluna do step */
+            height: 32px;
+        }
+        .arch-connector span {
+            display: block;
+            margin-left: 42px;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, #d1d1d6 0%, #4f46e5 100%);
+            opacity: 0.5;
+        }
+        /* As 4 rotas */
+        .arch-routes {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        .arch-route {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 18px 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .arch-route:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-color: rgba(79,70,229,0.25);
+        }
+        .arch-route-tag {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #4f46e5;
+            background: #ede9fe;
+            padding: 3px 9px;
+            border-radius: 99px;
+            margin-bottom: 10px;
+        }
+        .arch-route-name {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 2px;
+        }
+        .arch-route-desc {
+            font-size: 0.82rem;
+            color: #86868b;
+        }
+        /* Métricas */
+        .arch-metrics {
+            margin-top: 64px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            padding-top: 48px;
+        }
+        .arch-metric { text-align: center; }
+        .arch-metric-num {
+            display: block;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+        .arch-metric-label {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: #86868b;
+            line-height: 1.4;
+        }
+        /* ===== Revelação sequencial das etapas (stagger) ===== */
+        .arch-stage, .arch-connector {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94),
+                        transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+            will-change: opacity, transform;
+        }
+        .arch-stage.arch-in, .arch-connector.arch-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .arch-stage, .arch-connector {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Camada n8n (entrada/saída) */
+        .arch-node--n8n {
+            border-color: rgba(234,88,12,0.22);
+            background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+        }
+        .arch-node-icon--n8n { background: #ffedd5; color: #ea580c; }
+        .arch-layer-tag {
+            display: inline-block;
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 3px 10px;
+            border-radius: 99px;
+            margin-bottom: 10px;
+        }
+        .arch-layer-tag--n8n { color: #ea580c; background: #ffedd5; }
+        .arch-layer-tag--brain { color: #a5b4fc; background: rgba(165,180,252,0.12); }
+        /* Bloco do cérebro LangGraph (envolve roteamento + rotas + resiliência) */
+        .arch-brain {
+            flex: 1;
+            background: #1d1d1f;
+            border: 1px solid #1d1d1f;
+            border-radius: 24px;
+            padding: 28px 32px;
+            box-shadow: 0 12px 32px rgba(29,29,31,0.18);
+        }
+        .arch-brain-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .arch-brain-intro { margin-bottom: 22px; }
+        .arch-routes--dark { gap: 12px; }
+        .arch-route--dark {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .arch-route--dark:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(165,180,252,0.4);
+            box-shadow: none;
+        }
+        .arch-route-name--light { color: #f5f5f7; }
+        .arch-resilience {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            background: rgba(165,180,252,0.08);
+            border: 1px solid rgba(165,180,252,0.15);
+            color: #c7c7cc;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        .arch-resilience svg { color: #a5b4fc; flex-shrink: 0; }
+        .arch-resilience strong { color: #e5e7eb; }
+        @media (max-width: 640px) {
+            .arch-step { display: none; }
+            .arch-connector span { margin-left: 0; }
+            .arch-connector { padding-left: 0; justify-content: center; }
+            .arch-routes { grid-template-columns: 1fr; }
+            .arch-metrics { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; }
+        }
+    </style>
+    <!-- Usando a fonte Inter via Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="antialiased">
+
+    <!-- 1. Navegação Fixa -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="#hero" class="text-xl font-bold tracking-tight text-gray-800">
+                Pedro Aiello <span class="text-indigo-600">AI/Auto</span>
+            </a>
+            
+            <div class="space-x-8 hidden sm:flex text-sm font-medium text-gray-500">
+                <a href="#projetos" class="nav-link">Projetos</a>
+                <a href="#certificados" class="nav-link">Certificados</a>
+                <a href="#sobre" class="nav-link">Sobre Mim</a>
+                <a href="#arquitetura" class="nav-link">Arquitetura</a>
+            </div>
+            
+            <a href="#contato" class="hidden sm:block px-4 py-1.5 text-sm font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 btn-primary">
+                Fale Comigo
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 2. Seção Hero -->
+        <section id="hero" class="pt-32 pb-10 flex items-center justify-center bg-white reveal-on-scroll">
+            <div class="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <h1 class="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight mb-6 leading-[1.1] text-gray-900">
+                    Criando Inteligência.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Automatizando o Futuro.</span>
+                </h1>
+                <p class="text-xl sm:text-2xl text-gray-500 max-w-3xl mx-auto mb-10 font-normal leading-relaxed">
+                    Architeto de Sistemas Multi-Agente.
+                    De pipelines de IA determinísticos em Python até automações 24/7 
+                    em n8n, LangGraph e Langchain  — entrego produtos que funcionam com dados reais, não 
+                    em laboratório.
+                </p>
+                
+                <div class="flex justify-center gap-4 mb-8">
+                    <a href="#projetos" class="px-8 py-3.5 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 btn-primary">
+                        Ver Projetos
+                    </a>
+                    <a href="https://github.com/pedrofigueiredo" target="_blank" class="px-8 py-3.5 text-lg font-semibold text-gray-900 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-all btn-primary">
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAIXA DE HABILIDADES ANIMADA -->
+        <div class="skills-container reveal-on-scroll">
+            <div class="skills-track">
+                <span class="skill-pill">Python</span>
+                <span class="skill-pill">N8N Automação</span>
+                <span class="skill-pill">LangChain</span>
+                <span class="skill-pill">LangGraph</span>
+                <span class="skill-pill">RAG (Retrieval-Augmented Gen)</span>
+                <span class="skill-pill">Google Gemini API</span>
+                <span class="skill-pill">Claude Code</span>
+                <span class="skill-pill">Function Calling</span>
+                <span class="skill-pill">Supabase</span>
+                <span class="skill-pill">Lead Scoring</span>
+                <span class="skill-pill">Engenharia de Prompt</span>
+                <span class="skill-pill">Git/GitHub</span>
+                <span class="skill-pill">Google Colab</span>
+                
+                <span class="skill-pill">Python</span>
+                <span class="skill-pill">n8n Automação</span>
+                <span class="skill-pill">LangChain</span>
+                <span class="skill-pill">LangGraph</span>
+                <span class="skill-pill">RAG (Retrieval-Augmented Gen)</span>
+                <span class="skill-pill">Google Gemini API</span>
+                <span class="skill-pill">Function Calling</span>
+                <span class="skill-pill">Docker</span>
+                <span class="skill-pill">Lead Scoring</span>
+                <span class="skill-pill">Engenharia de Prompt</span>
+                <span class="skill-pill">Git/GitHub</span>
+                <span class="skill-pill">Google Colab</span>
+            </div>
+        </div>
+
+        <!-- 3. Seção Projetos -->
+        <section id="projetos" class="py-24 bg-f5f5f7 reveal-on-scroll">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Projetos Selecionados</h2>
+                    <p class="text-gray-500 max-w-2xl mx-auto">Soluções reais de engenharia aplicadas a problemas de negócio.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Projeto 1: LangGraph -->
+                    <article class="apple-card group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="card-icon-wrapper group-hover:bg-blue-50 transition-colors">
+                                <i data-lucide="network"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="card-tag">LangGraph</span>
+                                <span class="card-tag">n8n</span>
+                                <span class="card-tag">Supabase</span>
+                                <span class="card-tag">Pandas</span>
+                                <span class="card-tag">Python</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Finflow</h3>
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            
+                            Arquiteti um sistema multi-agente de auditoria e reconciliação financeira em Python + LangGraph,
+                            modelado como grafo cíclico stateful com 4 rotas de processamento e roteamento condicional.
+                        </p>
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            Implementei entity resolution determinística (rapidfuzz) 
+                            reconciliando milhares de lançamentos contra base orçamentária 
+                            e Drive em menos de 1 minuto, com coerção defensiva e duplo 
+                            backstop anti-loop.
+                        </p> 
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            Engenhei resiliência de LLM (Groq/Llama-3.3-70B) com rotação 
+                            de 6 API keys, exponential backoff e fallback, eliminando falhas 
+                            por rate-limit. Orquestrei I/O com n8n (Sheets/Drive/e-mail) e 
+                            Supabase (status real-time), com 43 testes automatizados (contrato + e2e).
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-6">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-600 mr-2"></i>Resiliência multi-camada</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-600 mr-2"></i>6 API keys + exponential backoff</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-600 mr-2"></i>Coerção defensiva + duplo backstop</li>
+                        </ul>
+                        <a href="https://github.com/pedrofigueiredo" target="_blank" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 mt-auto">
+                            Ver Projeto (GitHub) &rarr;
+                        </a>
+                    </article>
+
+                    <!-- Projeto 2: CRM n8n -->
+                    <article class="apple-card group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="card-icon-wrapper group-hover:bg-green-50 transition-colors">
+                                <i data-lucide="workflow"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="card-tag">LangGraph e LangChain</span>
+                                <span class="card-tag">Pydantic</span>
+                                <span class="card-tag">FastAPI</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Assistente Financeiro Autônomo (WhatsApp API)</h3>
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            Desenvolvi um agente conversacional integrado ao WhatsApp 
+                            (Meta Graph API) para gestão inteligente de despesas, com rotas 
+                            assíncronas em FastAPI e orquestração stateful via LangGraph 
+                            e LangChain.
+                        </p>
+                        <p class="text-gray-500 mb-6 flex-grow"> 
+                            Extraí dados estruturados de áudios e textos via LLMs (ChatGroq) 
+                            com validação por Pydantic, integrei back-end em Supabase 
+                            (PostgreSQL) para operações CRUD financeiras e geração de 
+                            relatórios com tratamento rigoroso de dados temporais (fusos 
+                            horários).
+                        </p>
+                        <p class="text-gray-500 mb-6 flex-grow"> 
+                            Implantei a API na nuvem (Render) com monitoramento sintético 
+                            (UptimeRobot) para evitar cold starts no webhook e garantir alta 
+                            disponibilidade.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-6">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-600 mr-2"></i>Extração de áudio e texto (multimodal)</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-600 mr-2"></i>Deploy em nuvem com alta disponibilidade</li>
+                        </ul>
+                        <a href="https://github.com/pedrofigueiredo" target="_blank" class="text-sm font-semibold text-teal-600 hover:text-teal-800 mt-auto">
+                            Ver Workflow (GitHub) &rarr;
+                        </a>
+                    </article>
+
+                    <!-- Projeto 3: Inteligência de Mercado (largura total, centralizado) -->
+                    <article class="apple-card group md:col-span-2 md:max-w-2xl md:mx-auto md:w-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="card-icon-wrapper group-hover:bg-purple-50 transition-colors">
+                                <i data-lucide="file-code"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="card-tag">n8n</span>
+                                <span class="card-tag">Gemini</span>
+                                <span class="card-tag">Web Scraping</span>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Sistema Autônomo de Inteligência de Mercado</h3>
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            Construí uma arquitetura resiliente em n8n para monitoramento 
+                            contínuo (24/7) de fontes de dados (APIs e web scraping), 
+                            capturando notícias e tendências em tempo real.
+                        </p>
+                        <p class="text-gray-500 mb-6 flex-grow">
+                            Implementei agentes de IA (Gemini) para curadoria automática, 
+                            análise de contexto e geração de resumos executivos, com entrega 
+                            automatizada de relatórios visuais diretamente aos stakeholders.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600 mb-6">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-purple-600 mr-2"></i>Monitoramento 24/7</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-purple-600 mr-2"></i>Curadoria automática com Gemini</li>
+                        </ul>
+                        <a href="https://github.com/PedroAiello" target="_blank" class="text-sm font-semibold text-purple-600 hover:text-purple-800 mt-auto">
+                            Ver Projeto (GitHub) &rarr;
+                        </a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Seção Certificados -->
+        <section id="certificados" class="py-20 bg-white border-t border-gray-200 reveal-on-scroll">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold text-center mb-16 text-gray-900">
+                    Educação e Certificações
+                </h2>
+
+                <!-- Container Principal com Grid -->
+                <div class="space-y-12">
+
+                    <!-- Subseção de Certificados Técnicos -->
+                    <div class="max-w-4xl mx-auto">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+                            Certificações Focadas em AI e Backend
+                        </h3>
+                        <!-- Grid atualizado com os dados do currículo -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+                            <!-- 1. Claude Code -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Claude Code In Action</p>
+                                    <p class="text-sm text-gray-500">Anthropic | 2026</p>
+                                </div>
+                            </div>
+
+                            <!-- 2. Automação N8N -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Automação com N8N</p>
+                                    <p class="text-sm text-gray-500">Santander / DIO | 2026</p>
+                                </div>
+                            </div>
+
+                            <!-- 3. ML e GenAI -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Machine Learning e GenAI na Prática</p>
+                                    <p class="text-sm text-gray-500">Nexa / AWS / DIO | 2025</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Certificado 4 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Vibe Coding: Soluções com Agentes de IA</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 5 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Automatizando Processos com IA</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 6 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Processamento de Linguagem Natural (NLP)</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 7 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Aplicações Práticas de LLMs</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 8 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Fundamentos de IA Generativa com Bedrock</p>
+                                    <p class="text-sm text-gray-500">Nexa / AWS | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 9 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Imersão Dev: Agentes de IA</p>
+                                    <p class="text-sm text-gray-500">Alura / Google | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 10 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Engenharia de Prompt</p>
+                                    <p class="text-sm text-gray-500">Alura | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 11 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Arquiteturas e Estruturas de LLMs</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 12 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Processos de Treinamento de LLMs</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 13 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Santander 2025 - Back-End com Python</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 14 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Fundamentos de Dados para IA & Machine Learning</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 15 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">CAIXA - Inteligência Artificial na Prática</p>
+                                    <p class="text-sm text-gray-500">CAIXA / Microsoft / DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 16 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Manipulação de Dados e Variáveis no N8N</p>
+                                    <p class="text-sm text-gray-500">DIO | 2025</p>
+                                </div>
+                            </div>
+
+                            <!-- Certificado 17 -->
+                            <div class="bg-f5f5f7 p-6 rounded-xl hover:shadow-md transition-shadow flex justify-between items-center border border-gray-100">
+                                <div>
+                                    <p class="text-lg font-semibold text-gray-900">Fundamentos de IA Generativa</p>
+                                    <p class="text-sm text-gray-500">Universia | 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subseção Sobre Mim -->
+                    <div id="sobre" class="max-w-4xl mx-auto pt-10 reveal-on-scroll">
+                        <!-- Conteúdo Biográfico Profissional -->
+                        <div class="mb-16">
+                            <h3 class="text-3xl font-bold text-gray-900 mb-8 border-l-4 border-indigo-600 pl-4">
+                                Engenharia & Inovação
+                            </h3>
+                            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100 relative overflow-hidden group hover:shadow-xl transition-all duration-300">
+                                <!-- Efeito de background decorativo sutil -->
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-50 to-transparent rounded-bl-full opacity-50"></div>
+                                
+                                <p class="text-lg text-gray-600 leading-relaxed mb-6 relative z-10">
+                                    Sou um estudante de Ciência da Computação movido pela obsessão de transformar processos manuais em fluxos de inteligência autônoma. Minha jornada não é definida apenas pelo código que escrevo, mas pelo impacto que ele gera: <span class="font-semibold text-indigo-700">tempo recuperado, decisões otimizadas e operações escaláveis</span>.
+                                </p>
+                                <p class="text-lg text-gray-600 leading-relaxed mb-6 relative z-10">
+                                    Projeto e construo sistemas multi-agente <em>stateful</em> com <strong>LangGraph</strong> e <strong>LangChain</strong>, transformando comandos em linguagem natural em pipelines determinísticos de dados em <strong>Python</strong> (pandas, FastAPI assíncrona) e automações resilientes em <strong>n8n</strong>.
+                                </p>
+                                <p class="text-lg text-gray-600 leading-relaxed relative z-10">
+                                    Entrego soluções de ponta a ponta combinando back-end robusto em <strong>Python</strong> e <strong>Supabase/PostgreSQL</strong> com prototipagem rápida via <strong>desenvolvimento assistido por IA</strong> (Claude Code e Lovable) — colocando produtos no ar que reconciliam grandes volumes de dados, <span class="bg-yellow-100 px-1 rounded">sobrevivem a falhas de API e eliminam trabalho manual</span>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+                            Formação Acadêmica e Idiomas
+                        </h3>
+                        
+                        <!-- Formação (Estácio) -->
+                        <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 mb-6">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-xl font-semibold text-gray-900">Ciência da Computação (Graduando)</p>
+                                    <p class="text-md text-gray-600 mb-2 font-medium">Previsão de Conclusão: Janeiro de 2030</p>
+                                    <p class="text-sm text-gray-500">Universidade Estácio de Sá | EAD | Início em 2025</p>
+                                </div>
+                                <span class="text-3xl">🎓</span>
+                            </div>
+                        </div>
+
+                        <!-- Idiomas -->
+                        <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                            <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <span>🌍</span> Idiomas
+                            </h4>
+                            <div class="space-y-4">
+                                <!-- Português -->
+                                <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-bold text-sm">PT</div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Português</p>
+                                        <p class="text-sm text-gray-500">Nativo</p>
+                                    </div>
+                                </div>
+                                <!-- Inglês -->
+                                <div class="flex items-center space-x-3 p-3 rounded-lg border border-indigo-50 bg-indigo-50/30">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-bold text-sm border border-red-200">EN</div>
+                                    <div class="flex-grow">
+                                        <div class="flex justify-between items-center">
+                                            <p class="font-semibold text-gray-900">Inglês - Intermediário</p>
+                                            <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">Em curso</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Cursando no <strong>Brasas English Course</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Seção Chat de Portfólio -->
+        <section id="arquitetura" class="py-20 bg-white border-t border-gray-200">
+            <style>
+                .chat-wrap { max-width: 760px; margin: 0 auto; }
+                .chat-box {
+                    background: #fff;
+                    border-radius: 24px;
+                    border: 1px solid rgba(0,0,0,0.07);
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .chat-header {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 18px 24px;
+                    border-bottom: 1px solid rgba(0,0,0,0.06);
+                    background: #fafafa;
+                }
+                .chat-header-avatar {
+                    width: 40px; height: 40px;
+                    background: #4f46e5;
+                    border-radius: 50%;
+                    display: flex; align-items: center; justify-content: center;
+                    flex-shrink: 0;
+                }
+                .chat-header-info { flex: 1; }
+                .chat-header-name { font-size: 0.95rem; font-weight: 700; color: #1d1d1f; }
+                .chat-header-status { font-size: 0.78rem; color: #86868b; display: flex; align-items: center; gap: 5px; }
+                .chat-status-dot {
+                    width: 7px; height: 7px; border-radius: 50%;
+                    background: #22c55e;
+                    display: inline-block;
+                }
+                .chat-badge {
+                    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+                    letter-spacing: 0.05em; color: #4f46e5; background: #ede9fe;
+                    padding: 3px 10px; border-radius: 99px;
+                }
+                .chat-messages {
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 24px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                    min-height: 320px;
+                    max-height: 420px;
+                    scroll-behavior: smooth;
+                }
+                .chat-msg-row { display: flex; gap: 10px; align-items: flex-end; }
+                .chat-msg-row--user { justify-content: flex-end; }
+                .chat-msg-avatar {
+                    width: 32px; height: 32px; border-radius: 50%;
+                    background: #4f46e5; flex-shrink: 0;
+                    display: flex; align-items: center; justify-content: center;
+                    margin-bottom: 2px;
+                }
+                .chat-bubble {
+                    max-width: 72%;
+                    padding: 11px 16px;
+                    font-size: 0.9rem;
+                    line-height: 1.55;
+                    border-radius: 18px;
+                }
+                .chat-bubble--bot {
+                    background: #f5f5f7;
+                    color: #1d1d1f;
+                    border-radius: 4px 18px 18px 18px;
+                }
+                .chat-bubble--user {
+                    background: #4f46e5;
+                    color: #fff;
+                    border-radius: 18px 18px 4px 18px;
+                }
+                .chat-bubble--error {
+                    background: #fef2f2;
+                    color: #991b1b;
+                    border-radius: 12px;
+                    font-size: 0.82rem;
+                }
+                .chat-input-area {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    padding: 14px 20px;
+                    border-top: 1px solid rgba(0,0,0,0.06);
+                    background: #fff;
+                }
+                .chat-input {
+                    flex: 1;
+                    border: 1.5px solid rgba(0,0,0,0.1);
+                    border-radius: 99px;
+                    padding: 11px 18px;
+                    font-size: 0.88rem;
+                    font-family: inherit;
+                    outline: none;
+                    background: #fafafa;
+                    color: #1d1d1f;
+                    transition: border-color 0.2s, background 0.2s;
+                }
+                .chat-input:focus {
+                    border-color: #4f46e5;
+                    background: #fff;
+                }
+                .chat-send-btn {
+                    background: #4f46e5;
+                    color: #fff;
+                    border: none;
+                    border-radius: 99px;
+                    padding: 11px 22px;
+                    font-size: 0.88rem;
+                    font-weight: 600;
+                    font-family: inherit;
+                    cursor: pointer;
+                    transition: background 0.2s, transform 0.15s;
+                    white-space: nowrap;
+                    display: flex; align-items: center; gap: 6px;
+                }
+                .chat-send-btn:hover:not(:disabled) { background: #4338ca; transform: translateY(-1px); }
+                .chat-send-btn:disabled { background: #c7c7cc; cursor: not-allowed; transform: none; }
+                .chat-typing-dot {
+                    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+                    background: #86868b; margin: 0 2px;
+                    animation: typing-bounce 1.2s infinite ease-in-out;
+                }
+                .chat-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+                .chat-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+                @keyframes typing-bounce {
+                    0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+                    40% { transform: translateY(-5px); opacity: 1; }
+                }
+                .chat-suggestions {
+                    display: flex; flex-wrap: wrap; gap: 8px;
+                    padding: 0 20px 16px;
+                }
+                .chat-suggestion-pill {
+                    background: #f5f5f7; color: #4b5563;
+                    border: 1px solid rgba(0,0,0,0.06);
+                    border-radius: 99px; padding: 6px 14px;
+                    font-size: 0.78rem; font-weight: 500; font-family: inherit;
+                    cursor: pointer; transition: all 0.2s;
+                }
+                .chat-suggestion-pill:hover { background: #ede9fe; color: #4f46e5; border-color: rgba(79,70,229,0.2); }
+                @media (max-width: 640px) {
+                    .chat-bubble { max-width: 88%; }
+                    .chat-suggestions { display: none; }
+                }
+            </style>
+
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm font-semibold tracking-widest text-indigo-600 uppercase mb-3">Portfólio Interativo</p>
+                <h2 class="text-4xl font-extrabold text-center mb-4 text-gray-900">Converse com meu Portfólio</h2>
+                <p class="text-center text-gray-500 mb-10 max-w-2xl mx-auto">
+                    Agente RAG rodando <strong>Groq Llama-3.3-70B</strong> com memória conversacional. Pergunte sobre projetos, habilidades ou experiências.
+                </p>
+
+                <div class="chat-wrap">
+                    <div class="chat-box">
+                        <!-- Cabeçalho -->
+                        <div class="chat-header">
+                            <div class="chat-header-avatar">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+                            </div>
+                            <div class="chat-header-info">
+                                <div class="chat-header-name">Assistente do Pedro</div>
+                                <div class="chat-header-status">
+                                    <span class="chat-status-dot"></span> Online · RAG + Memória conversacional
+                                </div>
+                            </div>
+                            <span class="chat-badge">Llama-3.3-70B</span>
+                        </div>
+
+                        <!-- Mensagens -->
+                        <div id="chatMessages" class="chat-messages">
+                            <div class="chat-msg-row">
+                                <div class="chat-msg-avatar">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+                                </div>
+                                <div class="chat-bubble chat-bubble--bot">
+                                    Olá! Sou o assistente de portfólio do Pedro Aiello. Pergunte sobre seus projetos, habilidades, experiências ou formação — estou aqui para ajudar recrutadores a conhecer o trabalho dele. 👋
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sugestões -->
+                        <div class="chat-suggestions">
+                            <button class="chat-suggestion-pill" onclick="enviarSugestao(this)">Quais são os projetos?</button>
+                            <button class="chat-suggestion-pill" onclick="enviarSugestao(this)">Quais habilidades técnicas?</button>
+                            <button class="chat-suggestion-pill" onclick="enviarSugestao(this)">Como o FinFlow funciona?</button>
+                            <button class="chat-suggestion-pill" onclick="enviarSugestao(this)">Qual a formação acadêmica?</button>
+                        </div>
+
+                        <!-- Input -->
+                        <div class="chat-input-area">
+                            <input id="chatInput" class="chat-input" type="text"
+                                placeholder="Pergunte sobre o Pedro..."
+                                maxlength="500" autocomplete="off" />
+                            <button id="chatSendBtn" class="chat-send-btn" onclick="enviarMensagem()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    const SESSION_ID = 'sess_' + Math.random().toString(36).slice(2, 11);
+                    const API = 'http://localhost:8000/chat';
+                    let typingEl = null;
+
+                    function $(id) { return document.getElementById(id); }
+
+                    function escHtml(s) {
+                        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    }
+
+                    function formatText(s) {
+                        // Bold: **text**
+                        return escHtml(s)
+                            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\n/g, '<br>');
+                    }
+
+                    function scrollToBottom() {
+                        const el = $('chatMessages');
+                        el.scrollTop = el.scrollHeight;
+                    }
+
+                    function addMessage(text, type) {
+                        const box = $('chatMessages');
+                        const row = document.createElement('div');
+                        row.className = 'chat-msg-row' + (type === 'user' ? ' chat-msg-row--user' : '');
+
+                        if (type === 'bot') {
+                            row.innerHTML = `
+                                <div class="chat-msg-avatar">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+                                </div>
+                                <div class="chat-bubble chat-bubble--bot">${formatText(text)}</div>`;
+                        } else if (type === 'user') {
+                            row.innerHTML = `<div class="chat-bubble chat-bubble--user">${escHtml(text)}</div>`;
+                        } else {
+                            row.innerHTML = `<div class="chat-bubble chat-bubble--error">${escHtml(text)}</div>`;
+                            row.style.justifyContent = 'center';
+                        }
+
+                        box.appendChild(row);
+                        scrollToBottom();
+                    }
+
+                    function showTyping() {
+                        const box = $('chatMessages');
+                        typingEl = document.createElement('div');
+                        typingEl.className = 'chat-msg-row';
+                        typingEl.innerHTML = `
+                            <div class="chat-msg-avatar">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+                            </div>
+                            <div class="chat-bubble chat-bubble--bot" style="padding: 14px 18px;">
+                                <span class="chat-typing-dot"></span>
+                                <span class="chat-typing-dot"></span>
+                                <span class="chat-typing-dot"></span>
+                            </div>`;
+                        box.appendChild(typingEl);
+                        scrollToBottom();
+                        $('chatSendBtn').disabled = true;
+                    }
+
+                    function hideTyping() {
+                        if (typingEl) { typingEl.remove(); typingEl = null; }
+                        $('chatSendBtn').disabled = false;
+                    }
+
+                    async function enviarMensagem() {
+                        const input = $('chatInput');
+                        const msg = input.value.trim();
+                        if (!msg) return;
+                        input.value = '';
+                        addMessage(msg, 'user');
+                        showTyping();
+
+                        try {
+                            const res = await fetch(API, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ mensagem: msg, session_id: SESSION_ID }),
+                            });
+                            const data = await res.json();
+                            hideTyping();
+                            if (res.ok) {
+                                addMessage(data.resposta || 'Sem resposta.', 'bot');
+                            } else {
+                                addMessage('Erro do servidor: ' + (data.detail || res.status), 'error');
+                            }
+                        } catch (e) {
+                            hideTyping();
+                            addMessage('Não foi possível conectar ao assistente. Verifique se o servidor está ativo em localhost:8000.', 'error');
+                        }
+                    }
+
+                    function enviarSugestao(btn) {
+                        $('chatInput').value = btn.textContent;
+                        enviarMensagem();
+                    }
+
+                    $('chatInput').addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensagem(); }
+                    });
+
+                    // Expõe para onclick do HTML
+                    window.enviarMensagem = enviarMensagem;
+                    window.enviarSugestao = enviarSugestao;
+                })();
+            </script>
+        </section>
+        
+        <!-- 6. Seção Contato/CTA -->
+        <section id="contato" class="bg-f5f5f7 py-20 border-t border-gray-200 reveal-on-scroll">
+            <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Pronto para Iniciar uma Automação?</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Vamos discutir como a Inteligência Artificial e Automação podem otimizar seus processos de negócio. Conecte-se comigo!</p>
+                
+                <!-- Ícones em vez de botões grandes -->
+                <div class="flex justify-center gap-8 items-center mb-8">
+                    <a href="https://www.linkedin.com/in/pedro-aiello" target="_blank" class="text-gray-400 hover:text-[#0077b5] transition-all duration-300 transform hover:scale-110">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://github.com/PedroAiello" target="_blank" class="text-gray-400 hover:text-[#333] transition-all duration-300 transform hover:scale-110">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <!-- Link de e-mail alterado para abrir o Gmail Compose diretamente -->
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=pedroaiello.delazari1@gmail.com" target="_blank" class="text-gray-400 hover:text-red-600 transition-all duration-300 transform hover:scale-110">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                    </a>
+                </div>
+
+                <p class="text-sm text-gray-500 mt-6">Telefone: (21) 99006-4846</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-white border-t border-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+            <p>&copy; 2026 Pedro Henrique Aiello Delazari Figueiredo.</p>
+            <p class="mt-1">Design inspirado na simplicidade e clareza da Apple.</p>
+        </div>
+    </footer>
+
+    <!-- Script de Rolagem Suave, Animação de Entrada e Chatbot -->
+    <script>
+        // Inicializa os ícones Lucide (protegido: se a CDN falhar, não derruba o resto do JS)
+        try {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        } catch (e) {
+            console.warn('Lucide não carregou (CDN); ícones SVG inline seguem funcionando.');
+        }
+
+        // --- SCRIPT DE ROLAGEM SUAVE (CUSTOMIZADO) ---
+        // Intercepta os cliques nos links para criar uma animação "amanteigada"
+        function smoothScroll(target, duration) {
+            var target = document.querySelector(target);
+            // 80px é o offset para compensar o header fixo
+            var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 80;
+            var startPosition = window.pageYOffset;
+            var distance = targetPosition - startPosition;
+            var startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                var timeElapsed = currentTime - startTime;
+                
+                // Função de Easing: Ease In Out Cubic (acelera no início, desacelera no fim)
+                var run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+                
+                window.scrollTo(0, run);
+                
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+
+            // Função matemática da curva cúbica
+            function easeInOutCubic(t, b, c, d) {
+                t /= d/2;
+                if (t < 1) return c/2*t*t*t + b;
+                t -= 2;
+                return c/2*(t*t*t + 2) + b;
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        // Aplica o smoothScroll a todos os links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                // Se for apenas "#" ou link vazio, não faz nada
+                if (href === '#' || !href) return;
+                
+                e.preventDefault();
+                smoothScroll(href, 1000); // 1000ms = 1 segundo de duração
+            });
+        });
+        
+        // --- SCRIPT DE ANIMAÇÃO DE ENTRADA (REVEAL ON SCROLL) ---
+        // Adiciona classe .is-visible quando o elemento entra na tela
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach(el => observer.observe(el));
+        });
+
+        // --- CASCATA DO DIAGRAMA DE ARQUITETURA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const flow = document.querySelector('.arch-flow');
+            if (!flow) return;
+            const items = Array.from(flow.children); // stages + connectors em ordem
+            const archObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const idx = items.indexOf(entry.target);
+                        entry.target.style.transitionDelay = (Math.max(0, idx) * 0.12) + 's';
+                        entry.target.classList.add('arch-in');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.25 });
+            items.forEach(el => archObserver.observe(el));
+        });
+        
+    </script>
+</body>
+</html>
