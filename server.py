@@ -64,6 +64,11 @@ async def root():
     }
 
 
+@app.head("/health")
+async def health_head():
+    return {}
+
+
 @app.get("/health")
 async def health_check():
     try:
