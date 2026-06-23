@@ -2,7 +2,7 @@
 
 Assistente de IA conversacional embutido no meu portfólio pessoal. Responde perguntas sobre meus projetos, habilidades, experiências e certificados com base em uma base de conhecimento própria — sem inventar dados.
 
-🔗 **Live:** [pedro-portfolio no Render](https://pedro-portfolio.onrender.com)
+🔗 **Live:** [pedro-portfolio no Render](https://pedro-portfolio-9bpd.onrender.com)
 
 ---
 
