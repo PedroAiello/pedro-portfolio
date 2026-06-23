@@ -423,7 +423,7 @@
                 <a href="#projetos" class="nav-link">Projetos</a>
                 <a href="#certificados" class="nav-link">Certificados</a>
                 <a href="#sobre" class="nav-link">Sobre Mim</a>
-                <a href="#arquitetura" class="nav-link">Arquitetura</a>
+                <a href="#arquitetura" class="nav-link">Chat IA</a>
             </div>
             
             <a href="#contato" class="hidden sm:block px-4 py-1.5 text-sm font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 btn-primary">
@@ -1057,7 +1057,7 @@
             <script>
                 (function () {
                     const SESSION_ID = 'sess_' + Math.random().toString(36).slice(2, 11);
-                    const API = 'http://localhost:8000/chat';
+                    const API = 'https://pedro-portfolio-9bpd.onrender.com/chat';
                     let typingEl = null;
 
                     function $(id) { return document.getElementById(id); }
@@ -1146,7 +1146,7 @@
                             }
                         } catch (e) {
                             hideTyping();
-                            addMessage('Não foi possível conectar ao assistente. Verifique se o servidor está ativo em localhost:8000.', 'error');
+                            addMessage('Não foi possível conectar ao assistente. Tente novamente em instantes.', 'error');
                         }
                     }
 
