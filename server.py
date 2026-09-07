@@ -19,7 +19,7 @@ load_dotenv()
 
 app = FastAPI(
     title="Agente de Portfólio — Pedro Aiello",
-    description="RAG sobre projetos, habilidades e experiências do Pedro. Groq Llama-3.3-70b + FAISS.",
+    description="RAG sobre projetos, habilidades e experiências do Pedro. Groq Kimi K2 + FAISS.",
     version="2.0.0",
 )
 

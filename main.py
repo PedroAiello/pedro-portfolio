@@ -1,6 +1,6 @@
 # ==============================================================================
 # Agente de Portfólio — Pedro Aiello
-# Stack: Groq Llama-3.3-70b | LangGraph | contexto completo (sem FAISS)
+# Stack: Groq Kimi K2 | LangGraph | contexto completo (sem FAISS)
 # ==============================================================================
 
 import os
@@ -19,7 +19,7 @@ RAG_DIR = SCRIPT_DIR / "rag"
 
 GROQ_KEY1 = os.getenv("GROQ_API_KEY", "")
 GROQ_KEY2 = os.getenv("GROQ_API_KEY2", "")
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "moonshotai/kimi-k2-instruct"
 
 MAX_TURNS = 5
 

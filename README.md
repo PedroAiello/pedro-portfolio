@@ -28,7 +28,7 @@ Visitante → index.html (chat)
       LangGraph StateGraph
        │
        ├── carregar_historico   ← busca memória da sessão (últimas 5 trocas)
-       ├── responder            ← Groq Llama-3.3-70b gera resposta com contexto
+       ├── responder            ← Groq Kimi K2 gera resposta com contexto
        └── salvar_historico     ← persiste turno na memória in-memory
                  │
                  ▼
@@ -44,7 +44,7 @@ O contexto do portfólio é carregado de arquivos `.md` na pasta `rag/` — bast
 | Camada | Tecnologia |
 |---|---|
 | **Agente / Orquestração** | [LangGraph](https://langchain-ai.github.io/langgraph/) (`StateGraph`) |
-| **LLM** | [Groq](https://groq.com/) — `llama-3.3-70b-versatile` com rotação de 2 chaves |
+| **LLM** | [Groq](https://groq.com/) — `moonshotai/kimi-k2-instruct` com rotação de 2 chaves |
 | **Servidor** | [FastAPI](https://fastapi.tiangolo.com/) (async) |
 | **Frontend** | HTML/CSS/JS puro (chat embutido no portfólio) |
 | **Deploy** | [Render](https://render.com/) |
