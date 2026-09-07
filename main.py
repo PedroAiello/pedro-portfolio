@@ -19,7 +19,7 @@ RAG_DIR = SCRIPT_DIR / "rag"
 
 GROQ_KEY1 = os.getenv("GROQ_API_KEY", "")
 GROQ_KEY2 = os.getenv("GROQ_API_KEY2", "")
-MODEL_NAME = "moonshotai/kimi-k2-instruct"
+MODEL_NAME = "llama-3.3-70b-versatile"
 
 MAX_TURNS = 5
 
