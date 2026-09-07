@@ -26,9 +26,7 @@ app = FastAPI(
 
 @app.get("/debug/modelos")
 def debug_modelos():
-    import json as _json
-    import urllib.request
-    import urllib.error
+    from groq import Groq
     from main import GROQ_KEY1, GROQ_KEY2
 
     resultado = {}
@@ -36,15 +34,11 @@ def debug_modelos():
         if not chave:
             resultado[nome] = "nao configurada"
             continue
-        req = urllib.request.Request("https://api.groq.com/openai/v1/models", headers={"Authorization": "Bearer " + chave})
         try:
-            with urllib.request.urlopen(req, timeout=20) as r:
-                dados = _json.loads(r.read())
-            resultado[nome] = sorted(m["id"] for m in dados.get("data", []))
-        except urllib.error.HTTPError as e:
-            resultado[nome] = {"http": e.code, "corpo": e.read().decode()[:300]}
+            cliente = Groq(api_key=chave)
+            resultado[nome] = sorted(m.id for m in cliente.models.list().data)
         except Exception as e:
-            resultado[nome] = {"erro": str(e)[:300]}
+            resultado[nome] = {"erro": type(e).__name__, "detalhe": str(e)[:400]}
     return resultado
 
 app.add_middleware(
