@@ -23,6 +23,30 @@ app = FastAPI(
     version="2.0.0",
 )
 
+
+@app.get("/debug/modelos")
+def debug_modelos():
+    import json as _json
+    import urllib.request
+    import urllib.error
+    from main import GROQ_KEY1, GROQ_KEY2
+
+    resultado = {}
+    for nome, chave in (("GROQ_API_KEY", GROQ_KEY1), ("GROQ_API_KEY2", GROQ_KEY2)):
+        if not chave:
+            resultado[nome] = "nao configurada"
+            continue
+        req = urllib.request.Request("https://api.groq.com/openai/v1/models", headers={"Authorization": "Bearer " + chave})
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                dados = _json.loads(r.read())
+            resultado[nome] = sorted(m["id"] for m in dados.get("data", []))
+        except urllib.error.HTTPError as e:
+            resultado[nome] = {"http": e.code, "corpo": e.read().decode()[:300]}
+        except Exception as e:
+            resultado[nome] = {"erro": str(e)[:300]}
+    return resultado
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
