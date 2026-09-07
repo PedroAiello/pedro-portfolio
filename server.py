@@ -19,27 +19,12 @@ load_dotenv()
 
 app = FastAPI(
     title="Agente de Portfólio — Pedro Aiello",
-    description="RAG sobre projetos, habilidades e experiências do Pedro. Groq Kimi K2 + FAISS.",
+    description="RAG sobre projetos, habilidades e experiências do Pedro. Groq GPT-OSS-120B + LangGraph.",
     version="2.0.0",
 )
 
 
-@app.get("/debug/modelos")
-def debug_modelos():
-    from groq import Groq
-    from main import GROQ_KEY1, GROQ_KEY2
 
-    resultado = {}
-    for nome, chave in (("GROQ_API_KEY", GROQ_KEY1), ("GROQ_API_KEY2", GROQ_KEY2)):
-        if not chave:
-            resultado[nome] = "nao configurada"
-            continue
-        try:
-            cliente = Groq(api_key=chave)
-            resultado[nome] = sorted(m.id for m in cliente.models.list().data)
-        except Exception as e:
-            resultado[nome] = {"erro": type(e).__name__, "detalhe": str(e)[:400]}
-    return resultado
 
 app.add_middleware(
     CORSMiddleware,
