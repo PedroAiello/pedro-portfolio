@@ -2,7 +2,11 @@
 API REST usando FastAPI para expor o agente RAG de portfólio via HTTP.
 """
 
-from fastapi import FastAPI, HTTPException
+import time
+from collections import defaultdict, deque
+from threading import Lock
+
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -33,6 +37,67 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# ==============================================================================
+# Protecao contra spam e abuso
+# ==============================================================================
+
+LIMITE_POR_MINUTO = 5
+LIMITE_POR_HORA = 30
+LIMITE_GLOBAL_POR_HORA = 300
+TAMANHO_MAX_MENSAGEM = 500
+
+_historico_ip = defaultdict(deque)
+_historico_global = deque()
+_trava = Lock()
+
+
+def _obter_ip(req: Request) -> str:
+    encaminhado = req.headers.get("x-forwarded-for", "")
+    if encaminhado:
+        return encaminhado.split(",")[0].strip()
+    return req.client.host if req.client else "desconhecido"
+
+
+def _descartar_antigos(fila: deque, janela: float, agora: float) -> None:
+    while fila and agora - fila[0] > janela:
+        fila.popleft()
+
+
+def verificar_limite(req: Request) -> None:
+    agora = time.time()
+    ip = _obter_ip(req)
+
+    with _trava:
+        _descartar_antigos(_historico_global, 3600, agora)
+        if len(_historico_global) >= LIMITE_GLOBAL_POR_HORA:
+            raise HTTPException(
+                status_code=429,
+                detail="O assistente atingiu o limite de uso desta hora. Tente novamente mais tarde.",
+            )
+
+        fila = _historico_ip[ip]
+        _descartar_antigos(fila, 3600, agora)
+
+        if sum(1 for t in fila if agora - t <= 60) >= LIMITE_POR_MINUTO:
+            raise HTTPException(
+                status_code=429,
+                detail="Muitas mensagens seguidas. Aguarde um pouco antes de perguntar de novo.",
+            )
+
+        if len(fila) >= LIMITE_POR_HORA:
+            raise HTTPException(
+                status_code=429,
+                detail="Voce atingiu o limite de mensagens por hora. Tente novamente mais tarde.",
+            )
+
+        fila.append(agora)
+        _historico_global.append(agora)
+
+        if len(_historico_ip) > 5000:
+            for chave in [k for k, v in _historico_ip.items() if not v]:
+                del _historico_ip[chave]
 
 
 # ==============================================================================
@@ -82,7 +147,15 @@ async def health_check():
 
 
 @app.post("/chat", response_model=MensagemResponse)
-async def chat_endpoint(request: MensagemRequest):
+async def chat_endpoint(request: MensagemRequest, req: Request):
+    verificar_limite(req)
+
+    if len(request.mensagem or "") > TAMANHO_MAX_MENSAGEM:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Mensagem muito longa (maximo {TAMANHO_MAX_MENSAGEM} caracteres).",
+        )
+
     if not request.mensagem or not request.mensagem.strip():
         raise HTTPException(status_code=400, detail="A mensagem não pode estar vazia.")
 
