@@ -19,7 +19,7 @@ RAG_DIR = SCRIPT_DIR / "rag"
 
 GROQ_KEY1 = os.getenv("GROQ_API_KEY", "")
 GROQ_KEY2 = os.getenv("GROQ_API_KEY2", "")
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "openai/gpt-oss-120b"
 
 MAX_TURNS = 5
 
